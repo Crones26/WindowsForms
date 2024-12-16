@@ -44,7 +44,7 @@ namespace Clock
 			privateFonts.AddFontFile(fontPath);
 
 			// Применяем шрифт
-			Font customFont = new Font(privateFonts.Families[0], 36f, FontStyle.Regular);
+			Font customFont = new Font(privateFonts.Families[0], 42f, FontStyle.Regular);
 			labelTime.Font = customFont;
 		}
 
