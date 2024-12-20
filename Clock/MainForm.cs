@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Drawing.Text;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,78 +12,49 @@ namespace Clock
 {
 	public partial class MainForm : Form
 	{
-		private PrivateFontCollection privateFonts; // Чтобы шрифт не удалялся как мусор
-
 		public MainForm()
 		{
 			InitializeComponent();
-
-			// Установка двойной буферизации
-			this.SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint, true);
-			this.UpdateStyles();
-
-			// Привязка событий для пунктов меню
-			cmBackColor.Click += cmBackColor_Click;
-			cmForeColor.Click += cmForeColor_Click;
-
 			labelTime.BackColor = Color.Black;
+
 			this.Location = new Point(Screen.PrimaryScreen.Bounds.Width - this.Width, 100);
-
-			// Подключаем шрифт
-			LoadCustomFont();
+			SetVisibility(false);
 		}
 
-		void LoadCustomFont()
+		void SetVisibility(bool visabile)
 		{
-			privateFonts = new PrivateFontCollection();
-
-			// Путь к шрифту
-			string fontPath = @"C:\Users\Cympak\source\repos\WindowsForms\Fonts\digital-7.ttf";
-
-			privateFonts.AddFontFile(fontPath);
-
-			// Применяем шрифт
-			Font customFont = new Font(privateFonts.Families[0], 42f, FontStyle.Regular);
-			labelTime.Font = customFont;
-		}
-
-		void SetVisibility(bool visible)
-		{
-			cbShowDate.Visible = visible;
-			cbShowWeekDay.Visible = visible;
-			btnHideControls.Visible = visible;
-			this.TransparencyKey = visible ? Color.Empty : this.BackColor;
-			this.FormBorderStyle = visible ? FormBorderStyle.FixedToolWindow : FormBorderStyle.None;
-			this.ShowInTaskbar = visible;
+			cbShowDate.Visible = visabile;
+			cbShowWeekDay.Visible = visabile;
+			btnHideControls.Visible = visabile;
+			this.TransparencyKey = visabile ? Color.Empty : this.BackColor;
+			this.FormBorderStyle = visabile ? FormBorderStyle.FixedToolWindow : FormBorderStyle.None;
+			this.ShowInTaskbar = visabile;
 		}
 
 		private void timer_Tick(object sender, EventArgs e)
 		{
 			labelTime.Text = DateTime.Now.ToString("hh:mm:ss tt", System.Globalization.CultureInfo.InvariantCulture);
-
 			if (cbShowDate.Checked)
 			{
-				labelTime.Text += "\n" + DateTime.Now.ToString(" dd. MM. yyyy ");
+				labelTime.Text += "\n";
+				labelTime.Text += DateTime.Now.ToString("dd.MM.yyyy");
 			}
 			if (cbShowWeekDay.Checked)
 			{
-				labelTime.Text += "\n" + DateTime.Now.DayOfWeek;
+				labelTime.Text += "\n";
+				labelTime.Text += DateTime.Now.DayOfWeek;
 			}
-
 			notifyIcon.Text = labelTime.Text;
-
-			// Перерисовываем элемент
-			labelTime.Invalidate();
 		}
 
 		private void btnHideControls_Click(object sender, EventArgs e)
 		{
-			SetVisibility(false);
+			SetVisibility(cmShowControls.Checked = false);
 		}
 
 		private void labelTime_DoubleClick(object sender, EventArgs e)
 		{
-			SetVisibility(true);
+			SetVisibility(cmShowControls.Checked = true);
 		}
 
 		private void cmExit_Click(object sender, EventArgs e)
@@ -126,26 +96,28 @@ namespace Clock
 			}
 		}
 
-		private void cmBackColor_Click(object sender, EventArgs e)
+		private void cmShowControls_CheckedChanged(object sender, EventArgs e)
 		{
-			using (ColorDialog colorDialog = new ColorDialog())
-			{
-				if (colorDialog.ShowDialog() == DialogResult.OK)
-				{
-					labelTime.BackColor = colorDialog.Color; // Устанавливаем цвет фона
-				}
-			}
+			SetVisibility(cmShowControls.Checked);
 		}
 
-		private void cmForeColor_Click(object sender, EventArgs e)
+		private void SetColor(object sender, EventArgs e)
 		{
-			using (ColorDialog colorDialog = new ColorDialog())
+			ColorDialog dialog = new ColorDialog();
+			switch ((sender as ToolStripMenuItem).Text)
 			{
-				if (colorDialog.ShowDialog() == DialogResult.OK)
+				case "Background color": dialog.Color = labelTime.BackColor; break;
+				case "Foreground color": dialog.Color = labelTime.ForeColor; break;
+			}
+			if (dialog.ShowDialog() == DialogResult.OK)
+			{
+				switch((sender as ToolStripMenuItem).Text)
 				{
-					labelTime.ForeColor = colorDialog.Color; // Устанавливаем цвет шрифта
+					case "Background color":labelTime.BackColor = dialog.Color; break;
+					case "Foreground color":labelTime.ForeColor = dialog.Color; break;
 				}
 			}
+
 		}
 	}
 }
