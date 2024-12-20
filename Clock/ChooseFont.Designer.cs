@@ -36,6 +36,7 @@
 			this.labelExample = new System.Windows.Forms.Label();
 			this.btnOK = new System.Windows.Forms.Button();
 			this.btnCancel = new System.Windows.Forms.Button();
+			this.btnApply = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.nudFontSize)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -45,14 +46,15 @@
 			this.cbFonts.FormattingEnabled = true;
 			this.cbFonts.Location = new System.Drawing.Point(16, 32);
 			this.cbFonts.Name = "cbFonts";
-			this.cbFonts.Size = new System.Drawing.Size(345, 24);
+			this.cbFonts.Size = new System.Drawing.Size(336, 24);
 			this.cbFonts.TabIndex = 0;
+			this.cbFonts.SelectedIndexChanged += new System.EventHandler(this.cbFonts_SelectedIndexChanged);
 			// 
 			// nudFontSize
 			// 
-			this.nudFontSize.Location = new System.Drawing.Point(367, 32);
+			this.nudFontSize.Location = new System.Drawing.Point(366, 34);
 			this.nudFontSize.Name = "nudFontSize";
-			this.nudFontSize.Size = new System.Drawing.Size(80, 22);
+			this.nudFontSize.Size = new System.Drawing.Size(89, 22);
 			this.nudFontSize.TabIndex = 1;
 			this.nudFontSize.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 			this.nudFontSize.Value = new decimal(new int[] {
@@ -94,26 +96,39 @@
 			this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
 			this.btnOK.Location = new System.Drawing.Point(278, 148);
 			this.btnOK.Name = "btnOK";
-			this.btnOK.Size = new System.Drawing.Size(83, 28);
+			this.btnOK.Size = new System.Drawing.Size(83, 41);
 			this.btnOK.TabIndex = 5;
 			this.btnOK.Text = "OK";
 			this.btnOK.UseVisualStyleBackColor = true;
+			this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
 			// 
 			// btnCancel
 			// 
 			this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
 			this.btnCancel.Location = new System.Drawing.Point(367, 148);
 			this.btnCancel.Name = "btnCancel";
-			this.btnCancel.Size = new System.Drawing.Size(83, 28);
+			this.btnCancel.Size = new System.Drawing.Size(83, 41);
 			this.btnCancel.TabIndex = 6;
 			this.btnCancel.Text = "Cancel";
 			this.btnCancel.UseVisualStyleBackColor = true;
+			// 
+			// btnApply
+			// 
+			this.btnApply.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.btnApply.Location = new System.Drawing.Point(366, 62);
+			this.btnApply.Name = "btnApply";
+			this.btnApply.Size = new System.Drawing.Size(89, 41);
+			this.btnApply.TabIndex = 7;
+			this.btnApply.Text = "Применить";
+			this.btnApply.UseVisualStyleBackColor = true;
+			this.btnApply.Click += new System.EventHandler(this.btnApply_Click);
 			// 
 			// ChooseFontForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(467, 201);
+			this.Controls.Add(this.btnApply);
 			this.Controls.Add(this.btnCancel);
 			this.Controls.Add(this.btnOK);
 			this.Controls.Add(this.labelExample);
@@ -121,6 +136,7 @@
 			this.Controls.Add(this.labelChooseFont);
 			this.Controls.Add(this.nudFontSize);
 			this.Controls.Add(this.cbFonts);
+			this.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "ChooseFontForm";
@@ -140,5 +156,6 @@
 		private System.Windows.Forms.Label labelExample;
 		private System.Windows.Forms.Button btnOK;
 		private System.Windows.Forms.Button btnCancel;
+		private System.Windows.Forms.Button btnApply;
 	}
 }

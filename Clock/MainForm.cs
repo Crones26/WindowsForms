@@ -3,22 +3,33 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Text;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 
 namespace Clock
 {
+
 	public partial class MainForm : Form
 	{
+		
+		ChooseFontForm fontDialog = null;
 		public MainForm()
 		{
+			this.SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint, true);
+			this.UpdateStyles();
+
 			InitializeComponent();
 			labelTime.BackColor = Color.Black;
-
-			this.Location = new Point(Screen.PrimaryScreen.Bounds.Width - this.Width, 100);
+			this.Location = new Point(Screen.PrimaryScreen.Bounds.Width - this.Width, 50);
 			SetVisibility(false);
+
+			cmShowConsole.Checked = true;
+			fontDialog = new ChooseFontForm();
 		}
 
 		void SetVisibility(bool visabile)
@@ -37,7 +48,7 @@ namespace Clock
 			if (cbShowDate.Checked)
 			{
 				labelTime.Text += "\n";
-				labelTime.Text += DateTime.Now.ToString("dd.MM.yyyy");
+				labelTime.Text += DateTime.Now.ToString(" dd. MM. yyyy ");
 			}
 			if (cbShowWeekDay.Checked)
 			{
@@ -111,13 +122,38 @@ namespace Clock
 			}
 			if (dialog.ShowDialog() == DialogResult.OK)
 			{
-				switch((sender as ToolStripMenuItem).Text)
+				switch ((sender as ToolStripMenuItem).Text)
 				{
-					case "Background color":labelTime.BackColor = dialog.Color; break;
-					case "Foreground color":labelTime.ForeColor = dialog.Color; break;
+					case "Background color": labelTime.BackColor = dialog.Color; break;
+					case "Foreground color": labelTime.ForeColor = dialog.Color; break;
 				}
 			}
-
 		}
+
+		private void cmChooseFont_Click(object sender, EventArgs e)
+		{
+			// Получаем позицию labelTime на экране
+			Point clockPosition = labelTime.PointToScreen(Point.Empty);
+
+			// Устанавливаем окно слева от часов
+			fontDialog.StartPosition = FormStartPosition.Manual; // Ручное управление позицией
+			fontDialog.Location = new Point(clockPosition.X - fontDialog.Width - 10, clockPosition.Y); // Сдвиг на ширину окна влево с небольшим отступом
+
+			if (fontDialog.ShowDialog() == DialogResult.OK)
+				labelTime.Font = fontDialog.SelectedFont;
+		}
+
+		private void cmShowConsole_CheckedChanged(object sender, EventArgs e)
+		{
+			if ((sender as ToolStripMenuItem).Checked)
+				AllocConsole();
+			else
+				FreeConsole();
+		}
+		[DllImportAttribute("kernel32.dll")]
+		public static extern bool AllocConsole();
+		[DllImportAttribute("kernel32.dll")]
+		public static extern bool FreeConsole();
+
 	}
 }
