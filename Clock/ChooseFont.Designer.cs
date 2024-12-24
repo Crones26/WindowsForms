@@ -36,7 +36,6 @@
 			this.labelExample = new System.Windows.Forms.Label();
 			this.btnOK = new System.Windows.Forms.Button();
 			this.btnCancel = new System.Windows.Forms.Button();
-			this.btnApply = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.nudFontSize)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -62,6 +61,7 @@
             0,
             0,
             0});
+			this.nudFontSize.ValueChanged += new System.EventHandler(this.nudFontSize_ValueChanged);
 			// 
 			// labelChooseFont
 			// 
@@ -112,23 +112,11 @@
 			this.btnCancel.Text = "Cancel";
 			this.btnCancel.UseVisualStyleBackColor = true;
 			// 
-			// btnApply
-			// 
-			this.btnApply.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.btnApply.Location = new System.Drawing.Point(366, 62);
-			this.btnApply.Name = "btnApply";
-			this.btnApply.Size = new System.Drawing.Size(89, 41);
-			this.btnApply.TabIndex = 7;
-			this.btnApply.Text = "Применить";
-			this.btnApply.UseVisualStyleBackColor = true;
-			this.btnApply.Click += new System.EventHandler(this.btnApply_Click);
-			// 
 			// ChooseFontForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(467, 201);
-			this.Controls.Add(this.btnApply);
 			this.Controls.Add(this.btnCancel);
 			this.Controls.Add(this.btnOK);
 			this.Controls.Add(this.labelExample);
@@ -156,6 +144,5 @@
 		private System.Windows.Forms.Label labelExample;
 		private System.Windows.Forms.Button btnOK;
 		private System.Windows.Forms.Button btnCancel;
-		private System.Windows.Forms.Button btnApply;
 	}
 }

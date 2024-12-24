@@ -56,13 +56,9 @@ namespace Clock
 			this.Close();
 		}
 
-		private void btnApply_Click(object sender, EventArgs e)
+		private void nudFontSize_ValueChanged(object sender, EventArgs e)
 		{
-			// Применяем шрифт к labelExample
-			PrivateFontCollection pcf = new PrivateFontCollection();
-			string full_name = $"{Directory.GetCurrentDirectory()}\\{cbFonts.SelectedItem}";
-			pcf.AddFontFile(full_name);
-			labelExample.Font = new Font(pcf.Families[0], Convert.ToInt32(nudFontSize.Value));
+			cbFonts_SelectedIndexChanged(sender, e);
 		}
 	}
 }
