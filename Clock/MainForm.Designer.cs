@@ -46,12 +46,12 @@
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.cmExit = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+			this.cmLoadOnStartup = new System.Windows.Forms.ToolStripMenuItem();
 			this.timer = new System.Windows.Forms.Timer(this.components);
 			this.cbShowDate = new System.Windows.Forms.CheckBox();
 			this.btnHideControls = new System.Windows.Forms.Button();
 			this.cbShowWeekDay = new System.Windows.Forms.CheckBox();
 			this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
-			this.loadOnWindowsStartupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.contextMenu.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -85,9 +85,9 @@
             this.toolStripSeparator2,
             this.cmExit,
             this.toolStripSeparator3,
-            this.loadOnWindowsStartupToolStripMenuItem});
+            this.cmLoadOnStartup});
 			this.contextMenu.Name = "contextMenu";
-			this.contextMenu.Size = new System.Drawing.Size(248, 244);
+			this.contextMenu.Size = new System.Drawing.Size(248, 272);
 			// 
 			// cmTopmost
 			// 
@@ -186,6 +186,14 @@
 			this.toolStripSeparator3.Name = "toolStripSeparator3";
 			this.toolStripSeparator3.Size = new System.Drawing.Size(244, 6);
 			// 
+			// cmLoadOnStartup
+			// 
+			this.cmLoadOnStartup.Name = "cmLoadOnStartup";
+			this.cmLoadOnStartup.Size = new System.Drawing.Size(247, 24);
+			this.cmLoadOnStartup.Text = "Load on Windows startup";
+			this.cmLoadOnStartup.Click += new System.EventHandler(this.cmLoadOnStartup_Click);
+			this.cmLoadOnStartup.CheckOnClick = true;
+			// 
 			// timer
 			// 
 			this.timer.Enabled = true;
@@ -234,12 +242,6 @@
 			this.notifyIcon.Visible = true;
 			this.notifyIcon.DoubleClick += new System.EventHandler(this.notifyIcon_DoubleClick);
 			// 
-			// loadOnWindowsStartupToolStripMenuItem
-			// 
-			this.loadOnWindowsStartupToolStripMenuItem.Name = "loadOnWindowsStartupToolStripMenuItem";
-			this.loadOnWindowsStartupToolStripMenuItem.Size = new System.Drawing.Size(247, 24);
-			this.loadOnWindowsStartupToolStripMenuItem.Text = "Load on Windows startup";
-			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(31F, 61F);
@@ -257,6 +259,7 @@
 			this.Name = "MainForm";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
 			this.Text = "Clock PV_319";
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
 			this.contextMenu.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
@@ -286,7 +289,7 @@
 		private System.Windows.Forms.ToolStripMenuItem cmShowControls;
 		private System.Windows.Forms.ToolStripMenuItem cmChooseFont;
 		private System.Windows.Forms.ToolStripMenuItem cmShowConsole;
-		private System.Windows.Forms.ToolStripMenuItem loadOnWindowsStartupToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem cmLoadOnStartup;
 	}
 }
 
