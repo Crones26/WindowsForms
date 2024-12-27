@@ -59,7 +59,8 @@ namespace Clock
 		}
 		void LoadSettings()
 		{
-			Directory.SetCurrentDirectory("..\\..\\Fonts");
+			string execution_path = Path.GetDirectoryName(Application.ExecutablePath);
+			Directory.SetCurrentDirectory($"{execution_path}\\..\\..\\Fonts");
 			StreamReader sr = new StreamReader("Settings.ini");
 			cmTopmost.Checked = bool.Parse(sr.ReadLine());
 			cmShowControls.Checked = bool.Parse(sr.ReadLine());
@@ -202,21 +203,13 @@ namespace Clock
 			SaveSettings();
 		}
 
-		private void cmLoadOnStartup_Click(object sender, EventArgs e)
+		private void cmLoadOnWinStartup_CheckedChanged(object sender, EventArgs e)
 		{
-			string appName = "ClockApp";
-			string appPath = Application.ExecutablePath;
-			using (RegistryKey key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", true))
-			{
-				if (cmLoadOnStartup.Checked)
-				{
-					key.SetValue(appName, appPath);
-				}
-				else
-				{
-					key.DeleteValue(appName, false);
-				}
-			}
+			string key_name = "ClockPV_319";
+			RegistryKey rk = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);    //true - открое ветку на запись.
+			if (cmLoadOnWinStartup.Checked) rk.SetValue(key_name, Application.ExecutablePath);
+			else rk.DeleteValue(key_name, false);
+			rk.Dispose();
 		}
 	}
 }
