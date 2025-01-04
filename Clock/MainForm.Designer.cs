@@ -52,6 +52,8 @@
 			this.btnHideControls = new System.Windows.Forms.Button();
 			this.cbShowWeekDay = new System.Windows.Forms.CheckBox();
 			this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
+			this.cbAlarms = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
 			this.contextMenu.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -78,16 +80,18 @@
             this.toolStripSeparator1,
             this.cmShowDate,
             this.cmShowWeekDay,
-            this.toolStripSeparator4,
             this.cmShowConsole,
+            this.toolStripSeparator4,
             this.cmChooseFont,
             this.cmColors,
+            this.toolStripSeparator5,
+            this.cbAlarms,
             this.toolStripSeparator3,
             this.cmLoadOnWinStartup,
             this.toolStripSeparator2,
             this.cmExit});
 			this.contextMenu.Name = "contextMenu";
-			this.contextMenu.Size = new System.Drawing.Size(248, 244);
+			this.contextMenu.Size = new System.Drawing.Size(248, 302);
 			// 
 			// cmTopmost
 			// 
@@ -158,14 +162,14 @@
 			// cmBackColor
 			// 
 			this.cmBackColor.Name = "cmBackColor";
-			this.cmBackColor.Size = new System.Drawing.Size(209, 26);
+			this.cmBackColor.Size = new System.Drawing.Size(224, 26);
 			this.cmBackColor.Text = "Background color";
 			this.cmBackColor.Click += new System.EventHandler(this.SetColor);
 			// 
 			// cmForeColor
 			// 
 			this.cmForeColor.Name = "cmForeColor";
-			this.cmForeColor.Size = new System.Drawing.Size(209, 26);
+			this.cmForeColor.Size = new System.Drawing.Size(224, 26);
 			this.cmForeColor.Text = "Foreground color";
 			this.cmForeColor.Click += new System.EventHandler(this.SetColor);
 			// 
@@ -242,6 +246,18 @@
 			this.notifyIcon.Visible = true;
 			this.notifyIcon.DoubleClick += new System.EventHandler(this.notifyIcon_DoubleClick);
 			// 
+			// cbAlarms
+			// 
+			this.cbAlarms.Name = "cbAlarms";
+			this.cbAlarms.Size = new System.Drawing.Size(247, 24);
+			this.cbAlarms.Text = "Alarms";
+			this.cbAlarms.Click += new System.EventHandler(this.cmAlarm_Click);
+			// 
+			// toolStripSeparator5
+			// 
+			this.toolStripSeparator5.Name = "toolStripSeparator5";
+			this.toolStripSeparator5.Size = new System.Drawing.Size(244, 6);
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(31F, 61F);
@@ -290,6 +306,8 @@
 		private System.Windows.Forms.ToolStripMenuItem cmChooseFont;
 		private System.Windows.Forms.ToolStripMenuItem cmShowConsole;
 		private System.Windows.Forms.ToolStripMenuItem cmLoadOnWinStartup;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
+		private System.Windows.Forms.ToolStripMenuItem cbAlarms;
 	}
 }
 
