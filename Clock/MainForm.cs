@@ -17,7 +17,6 @@ namespace Clock
 	public partial class MainForm : Form
 	{
 		ChooseFontForm fontDialog = null;
-
 		AlarmsForm alarms = null;
 
 		public MainForm()
@@ -222,5 +221,7 @@ namespace Clock
 			alarms.Location = new Point(this.Location.X - alarms.Width, this.Location.Y);
 			alarms.ShowDialog();
 		}
+
+
 	}
 }
