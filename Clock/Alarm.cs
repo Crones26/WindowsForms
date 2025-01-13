@@ -39,9 +39,8 @@ namespace Clock
 		public override string ToString()
 		{
 			string info = "";
-			if (Date != DateTime.MinValue) info += $"{Date}\t";
+			if (Date != DateTime.MinValue) info += $"{Date.ToShortDateString()}\t";
 			info += DateTime.Today.Add(Time).ToString("hh:mm:ss tt");
-																	 
 			info += "\t";
 			info += $"{Weekdays}\t";
 			info += $"{Filename}\t";
