@@ -11,6 +11,7 @@ using System.Runtime.InteropServices;
 using System.IO;
 using System.Diagnostics;
 using Microsoft.Win32;
+using NAudio.Wave;
 
 namespace Clock
 {
@@ -18,6 +19,7 @@ namespace Clock
 	{
 		ChooseFontForm fontDialog = null;
 		AlarmsForm alarms = null;
+		Alarm nextAlarm = null;
 
 		public MainForm()
 		{
@@ -35,6 +37,7 @@ namespace Clock
 			LoadSettings();
 			//fontDialog = new ChooseFontForm();
 			alarms= new AlarmsForm();
+			Console.WriteLine(DateTime.MinValue);
 		}
 		void SetVisibility(bool visible)
 		{
@@ -78,27 +81,29 @@ namespace Clock
 			fontDialog = new ChooseFontForm(font_name, font_size);
 			labelTime.Font = fontDialog.Font;
 		}
+		Alarm FindNextAlarm()
+		{
+			Alarm[] actualAlarms = alarms.LB_Alarms.Items.Cast<Alarm>().Where(a => a.Time > DateTime.Now.TimeOfDay).ToArray();
+			return actualAlarms.Min();
+		}
 
 		private void timer_Tick(object sender, EventArgs e)
 		{
-			labelTime.Text = DateTime.Now.ToString
-				(
-					"hh:mm:ss tt",
-					System.Globalization.CultureInfo.InvariantCulture
-				);
+			labelTime.Text = DateTime.Now.ToString("hh:mm:ss tt", System.Globalization.CultureInfo.InvariantCulture);
 
 			if (cbShowDate.Checked)
 			{
-				labelTime.Text += "\n";
-				labelTime.Text += DateTime.Now.ToString("dd.MM.yyyy");
+				labelTime.Text += "\n" + DateTime.Now.ToString("dd.MM.yyyy");
 			}
 			if (cbShowWeekDay.Checked)
 			{
-				labelTime.Text += "\n";
-				labelTime.Text += DateTime.Now.DayOfWeek;
+				labelTime.Text += "\n" + DateTime.Now.DayOfWeek;
 			}
+
 			notifyIcon.Text = labelTime.Text;
 		}
+
+		
 
 		private void btnHideControls_Click(object sender, EventArgs e)
 		{

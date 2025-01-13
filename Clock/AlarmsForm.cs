@@ -14,12 +14,21 @@ namespace Clock
 	{
 		AddAlarmForm addAlarm = null;
 		OpenFileDialog openFile = null;
+		public ListBox LB_Alarms
+		{
+			get => lbAlarms;
+			//get
+			//{
+			//	return lbAlarms;
+			//}
+		}
 		public AlarmsForm()
 		{
 			InitializeComponent();
 			addAlarm = new AddAlarmForm();
 			openFile = new OpenFileDialog();
 		}
+
 		private void btnAdd_Click(object sender, EventArgs e)
 		{
 			addAlarm.StartPosition = FormStartPosition.Manual;
@@ -27,8 +36,19 @@ namespace Clock
 			DialogResult result = addAlarm.ShowDialog();
 			if (result == DialogResult.OK)
 			{
-				lbAlarms.Items.Add(addAlarm.Alarm);
+				lbAlarms.Items.Add(new Alarm(addAlarm.Alarm));  //CopyConstructor
 			}
 		}
+
+		private void lbAlarms_DoubleClick(object sender, EventArgs e)
+		{
+			addAlarm.Alarm = lbAlarms.SelectedItem as Alarm;
+			if (addAlarm.ShowDialog() == DialogResult.OK)
+			{
+				//lbAlarms.SelectedItem = new Alarm(addAlarm.Alarm);
+				lbAlarms.Items[lbAlarms.SelectedIndex] = addAlarm.Alarm;
+			}
+		}
+
 	}
 }

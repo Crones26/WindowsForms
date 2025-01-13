@@ -113,7 +113,7 @@
 			this.btnFile.TabIndex = 6;
 			this.btnFile.Text = "Choose File";
 			this.btnFile.UseVisualStyleBackColor = true;
-			this.btnFile.Click += new System.EventHandler(this.btnFile_Click_1);
+			this.btnFile.Click += new System.EventHandler(this.btnFile_Click);
 			// 
 			// clbWeekDays
 			// 
@@ -171,6 +171,7 @@
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.Name = "AddAlarmForm";
 			this.Text = "AddAlarm";
+			this.Load += new System.EventHandler(this.AddAlarmForm_Load);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
