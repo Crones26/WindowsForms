@@ -90,7 +90,7 @@ namespace Clock
 		private void timer_Tick(object sender, EventArgs e)
 		{
 			labelTime.Text = DateTime.Now.ToString("hh:mm:ss tt", System.Globalization.CultureInfo.InvariantCulture);
-			CheckAlarms();
+			//CheckAlarms();
 
 			if (cbShowDate.Checked)
 			{
@@ -102,7 +102,6 @@ namespace Clock
 			}
 			notifyIcon.Text = labelTime.Text;
 		}
-
 
 		private bool IsAlarmTime(Alarm alarm)
 		{
