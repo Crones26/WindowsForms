@@ -101,6 +101,9 @@ namespace Clock
 				labelTime.Text += "\n" + DateTime.Now.DayOfWeek;
 			}
 			notifyIcon.Text = labelTime.Text;
+
+			if (alarms.LB_Alarms.Items.Count > 0) nextAlarm = FindNextAlarm(); //nextAlarm = alarms.LB_Alarms.Items.Cast<Alarm>().ToArray().Min();
+			if (nextAlarm != null) Console.WriteLine(nextAlarm);
 		}
 
 
