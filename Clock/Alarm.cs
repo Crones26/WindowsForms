@@ -8,7 +8,7 @@ namespace Clock
 {
 	public class Alarm : IComparable<Alarm>
 	{
-		public bool HasRung { get; set; } = false;
+		//public bool HasRung { get; set; } = false;
 		public DateTime Date { get; set; }
 		public TimeSpan Time { get; set; }
 		public Week Weekdays { get; set; }

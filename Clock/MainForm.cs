@@ -38,6 +38,7 @@ namespace Clock
 			//fontDialog = new ChooseFontForm();
 			alarms = new AlarmsForm();
 			Console.WriteLine(DateTime.MinValue);
+			axWindowsMediaPlayer.Visible = false;
 		}
 		void SetVisibility(bool visible)
 		{
@@ -86,11 +87,18 @@ namespace Clock
 			Alarm[] actualAlarms = alarms.LB_Alarms.Items.Cast<Alarm>().Where(a => a.Time > DateTime.Now.TimeOfDay).ToArray();
 			return actualAlarms.Min();
 		}
-		private DateTime lastResetDate = DateTime.Today;
+
+		void PlayAlarm()
+		{
+			axWindowsMediaPlayer.URL = nextAlarm.Filename;
+			axWindowsMediaPlayer.settings.volume = 100;
+			axWindowsMediaPlayer.Ctlcontrols.play();
+			axWindowsMediaPlayer.Visible = true;
+		}
+
 		private void timer_Tick(object sender, EventArgs e)
 		{
 			labelTime.Text = DateTime.Now.ToString("hh:mm:ss tt", System.Globalization.CultureInfo.InvariantCulture);
-			//CheckAlarms();
 
 			if (cbShowDate.Checked)
 			{
@@ -101,68 +109,22 @@ namespace Clock
 				labelTime.Text += "\n" + DateTime.Now.DayOfWeek;
 			}
 			notifyIcon.Text = labelTime.Text;
-		}
 
-		private bool IsAlarmTime(Alarm alarm)
-		{
-			if (alarm.HasRung) return false;
-
-			int currentDayIndex = ((int)DateTime.Now.DayOfWeek + 6) % 7;
-			bool isCorrectDay = alarm.Weekdays.ExtractWeekDays()[currentDayIndex];
-			bool isCorrectDate = alarm.Date == DateTime.MinValue || alarm.Date.Date == DateTime.Now.Date;
-
-			bool isCorrectTime = alarm.Time.Hours == DateTime.Now.Hour &&
-								 alarm.Time.Minutes == DateTime.Now.Minute &&
-								 DateTime.Now.Second == 0;
-
-			return isCorrectDay && isCorrectDate && isCorrectTime;
-		}
-
-		private void CheckAlarms()
-		{
-			foreach (Alarm alarm in alarms.LB_Alarms.Items)
+			if (
+				nextAlarm != null &&
+				nextAlarm.Time.Hours == DateTime.Now.Hour &&
+				nextAlarm.Time.Minutes == DateTime.Now.Minute &&
+				nextAlarm.Time.Seconds == DateTime.Now.Second
+				)
 			{
-				if (!alarm.HasRung && IsAlarmTime(alarm))
-				{
-					TriggerAlarm(alarm);
-
-					alarm.HasRung = true;
-				}
-			}
-		}
-
-		private void TriggerAlarm(Alarm alarm)
-		{
-			WindowsMediaPlayer player = null;
-
-			if (!string.IsNullOrEmpty(alarm.Filename) && File.Exists(alarm.Filename))
-			{
-				player = new WindowsMediaPlayer();
-				player.URL = alarm.Filename;
-				player.controls.play();
+				System.Threading.Thread.Sleep(1000);
+				PlayAlarm();
+				//MessageBox.Show(this, nextAlarm.ToString(), "Alarm", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				nextAlarm = null;
 			}
 
-			MessageBox.Show
-			(
-				alarm.Message,
-				"Будильник",
-				MessageBoxButtons.OK,
-				MessageBoxIcon.Information
-			);
-
-			if (player != null)
-			{
-				player.controls.stop();
-				player.close();
-			}
-			alarm.HasRung = true;
-		}
-		private void ResetAlarmsDaily()
-		{
-			foreach (Alarm alarm in alarms.LB_Alarms.Items)
-			{
-				alarm.HasRung = false;
-			}
+			if (alarms.LB_Alarms.Items.Count > 0) nextAlarm = FindNextAlarm(); //nextAlarm = alarms.LB_Alarms.Items.Cast<Alarm>().ToArray().Min();
+			if (nextAlarm != null) Console.WriteLine(nextAlarm);
 		}
 
 		private void btnHideControls_Click(object sender, EventArgs e)
