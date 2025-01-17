@@ -7,6 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
+using Newtonsoft.Json;
+
 
 namespace Clock
 {
@@ -27,10 +30,12 @@ namespace Clock
 			InitializeComponent();
 			addAlarm = new AddAlarmForm();
 			openFile = new OpenFileDialog();
+			LoadAlarms(); // Загрузка будильников при старте
 		}
 
 		private void btnAdd_Click(object sender, EventArgs e)
 		{
+			//addAlarm = new AddAlarmForm();
 			addAlarm.StartPosition = FormStartPosition.Manual;
 			addAlarm.Location = new Point(this.Location.X + 25, this.Location.Y + 25);
 			DialogResult result = addAlarm.ShowDialog();
@@ -47,6 +52,7 @@ namespace Clock
 				if (lbAlarms.SelectedItem != null)
 				{
 					addAlarm.Alarm = lbAlarms.SelectedItem as Alarm;
+					addAlarm.StartPosition = FormStartPosition.Manual;
 					addAlarm.Location = new Point(this.Location.X + 25, this.Location.Y + 25);
 					if (addAlarm.ShowDialog() == DialogResult.OK)
 					{
@@ -67,6 +73,35 @@ namespace Clock
 		private void lbAlarms_KeyDown_1(object sender, KeyEventArgs e)
 		{
 			if (e.KeyCode == Keys.Delete) btnDelete_Click(sender, e);
+		}
+
+		protected override void OnFormClosing(FormClosingEventArgs e)
+		{
+			SaveAlarms(); // Сохранение будильников перед закрытием
+			base.OnFormClosing(e);
+		}
+
+		public void SaveAlarms()
+		{
+			var alarms = LB_Alarms.Items.Cast<Alarm>().ToList();
+			string json = JsonConvert.SerializeObject(alarms, Newtonsoft.Json.Formatting.Indented);
+			File.WriteAllText("Alarms.json", json);
+		}
+
+		public void LoadAlarms()
+		{
+			if (File.Exists("Alarms.json"))
+			{
+				string json = File.ReadAllText("Alarms.json");
+				var alarms = JsonConvert.DeserializeObject<List<Alarm>>(json);
+				if (alarms != null)
+				{
+					foreach (var alarm in alarms)
+					{
+						LB_Alarms.Items.Add(alarm);
+					}
+				}
+			}
 		}
 	}
 }

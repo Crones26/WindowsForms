@@ -26,6 +26,7 @@ namespace Clock
 		private void cbUseDate_CheckedChanged(object sender, EventArgs e)
 		{
 			dtpDate.Enabled = cbUseDate.Checked;
+			clbWeekDays.Enabled = !cbUseDate.Checked;
 		}
 		void SetWeekDays(bool[] week)
 		{
@@ -50,7 +51,7 @@ namespace Clock
 			Alarm.Weekdays = week;
 			Alarm.Filename = lblAlarmFile.Text;
 			Alarm.Message = rtbMessage.Text;
-			if (Alarm.Filename == "" || Alarm.Filename == "File:")
+			if (string.IsNullOrEmpty(Alarm.Filename) || Alarm.Filename == "File:")
 			{
 				this.DialogResult = DialogResult.None;
 				MessageBox.Show

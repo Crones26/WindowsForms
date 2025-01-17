@@ -3,16 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Clock
 {
 	public class Week
 	{
 		public static readonly string[] Weekdays = new string[] { "Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс" };
-		byte week;
+
+		[JsonIgnore]
+		private byte week;
+
+		[JsonProperty("WeekDays")]
+		public bool[] WeekDays
+		{
+			get => ExtractWeekDays();
+			set => CompressWeekDays(value);
+		}
+
 		public Week()
 		{
-			week = 0;
+			week = 127;
 		}
 		public Week(bool[] days)
 		{
@@ -25,11 +36,10 @@ namespace Clock
 		//}
 		public void CompressWeekDays(bool[] days)
 		{
+			week = 0;
 			for (byte i = 0; i < days.Length; i++)
 			{
-				//byte day = 1;
 				if (days[i]) week |= (byte)(1 << i);
-				//if (days[i]) SetDay(i);
 			}
 		}
 		public bool[] ExtractWeekDays()
@@ -37,9 +47,16 @@ namespace Clock
 			bool[] weekDays = new bool[7];
 			for (byte i = 0; i < 7; i++)
 			{
-				weekDays[i] = (week & (byte)(1 << i)) != 0;
+				weekDays[i] = (week & (1 << i)) != 0;
 			}
 			return weekDays;
+		}
+		public bool Contains(DayOfWeek day)
+		{
+			int i_day = (int)day;
+			i_day -= 1;
+			if (i_day == -1) i_day = 6;
+			return (week & (1<<i_day)) != 0;
 		}
 		public override string ToString()
 		{
@@ -49,7 +66,7 @@ namespace Clock
 				if (((1 << i) & week) != 0)
 					weekdays += $"{Weekdays[i]},";
 			}
-			return weekdays;
+			return weekdays.TrimEnd(',');
 		}
 	}
 }

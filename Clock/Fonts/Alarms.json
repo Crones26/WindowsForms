@@ -1,0 +1,36 @@
+[
+  {
+    "Date": "0001-01-01T00:00:00",
+    "Time": "13:12:03",
+    "Weekdays": {
+      "WeekDays": [
+        true,
+        false,
+        true,
+        false,
+        true,
+        false,
+        true
+      ]
+    },
+    "Filename": "C:\\Users\\Cympak\\source\\repos\\WindowsForms\\Clock\\Sound\\07 - Blind Witness - Baby One More Notch.flac",
+    "Message": ""
+  },
+  {
+    "Date": "0001-01-01T00:00:00",
+    "Time": "17:37:10",
+    "Weekdays": {
+      "WeekDays": [
+        true,
+        true,
+        false,
+        true,
+        false,
+        true,
+        true
+      ]
+    },
+    "Filename": "C:\\Users\\Cympak\\source\\repos\\WindowsForms\\Clock\\Sound\\07 - Blind Witness - Baby One More Notch.flac",
+    "Message": ""
+  }
+]

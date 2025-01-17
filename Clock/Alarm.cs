@@ -8,7 +8,6 @@ namespace Clock
 {
 	public class Alarm : IComparable<Alarm>
 	{
-		//public bool HasRung { get; set; } = false;
 		public DateTime Date { get; set; }
 		public TimeSpan Time { get; set; }
 		public Week Weekdays { get; set; }
@@ -47,6 +46,20 @@ namespace Clock
 			info += $"{Message}\t";
 			return info;
 		}
+		//public static bool operator ==(Alarm left, Alarm right)
+		//{
+		//	return
+		//		left.Date == right.Date &&
+		//		left.Time == right.Time &&
+		//		left.Weekdays == right.Weekdays &&
+		//		left.Filename == right.Filename &&
+		//		left.Message == right.Message;
+		//}
+		//public static bool operator !=(Alarm left, Alarm right)
+		//{
+		//	return !(left == right);
+		//}
+
 		//public static bool operator >(Alarm left, Alarm right)
 		//{
 		//	if (left.Date != DateTime.MinValue || right.Date != DateTime.MinValue)
