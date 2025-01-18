@@ -7,58 +7,49 @@ using System.Runtime.InteropServices;
 
 namespace Clock
 {
-    public static class PowerManagement
-    {
-        // Импорт функций из kernel32.dll
-        [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern IntPtr CreateWaitableTimer(IntPtr lpTimerAttributes, bool bManualReset, string lpTimerName);
+	public class PowerManagement
+	{
+		[DllImport("kernel32.dll", SetLastError = true)]
+		public static extern IntPtr CreateWaitableTimer(IntPtr lpTimerAttributes, bool bManualReset, string lpTimerName);
 
-        [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern bool SetWaitableTimer(
-            IntPtr hTimer,
-            [In] ref long lpDueTime,
-            int lPeriod,
-            IntPtr pfnCompletionRoutine,
-            IntPtr lpArgToCompletionRoutine,
-            bool fResume);
+		[DllImport("kernel32.dll", SetLastError = true)]
+		public static extern bool SetWaitableTimer(
+			IntPtr hTimer,
+			[In] ref long lpDueTime,
+			int lPeriod,
+			IntPtr pfnCompletionRoutine,
+			IntPtr lpArgToCompletionRoutine,
+			bool fResume);
 
-        [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern bool CancelWaitableTimer(IntPtr hTimer);
+		[DllImport("kernel32.dll", SetLastError = true)]
+		public static extern bool CancelWaitableTimer(IntPtr hTimer);
 
-        [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern bool CloseHandle(IntPtr hObject);
+		public static void SetWakeTimer(DateTime alarmTime)
+		{
+			try
+			{
+				DateTime wakeTime = alarmTime.AddSeconds(-30);
+				long dueTime = wakeTime.ToFileTime();
 
-        public static IntPtr SetWakeTimer(DateTime alarmTime)
-        {
-            // Преобразуем время в UTC
-            DateTime utcTime = alarmTime.ToUniversalTime();
-            long dueTime = utcTime.ToFileTime();
+				IntPtr timer = CreateWaitableTimer(IntPtr.Zero, true, "WakeTimer");
+				if (timer == IntPtr.Zero)
+				{
+					throw new System.ComponentModel.Win32Exception(Marshal.GetLastWin32Error());
+				}
 
-            // Создаем таймер
-            IntPtr timerHandle = CreateWaitableTimer(IntPtr.Zero, true, "ClockWakeTimer");
+				if (!SetWaitableTimer(timer, ref dueTime, 0, IntPtr.Zero, IntPtr.Zero, true))
+				{
+					throw new System.ComponentModel.Win32Exception(Marshal.GetLastWin32Error());
+				}
 
-            if (timerHandle == IntPtr.Zero)
-            {
-                throw new Exception("Не удалось создать таймер пробуждения.");
-            }
+				Console.WriteLine($"Wake timer set for: {wakeTime}");
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine($"Error setting wake timer: {ex.Message}");
+			}
+		}
 
-            // Устанавливаем таймер пробуждения
-            if (!SetWaitableTimer(timerHandle, ref dueTime, 0, IntPtr.Zero, IntPtr.Zero, true))
-            {
-                CloseHandle(timerHandle);
-                throw new Exception("Не удалось установить таймер пробуждения.");
-            }
 
-            return timerHandle;
-        }
-
-        public static void CancelWakeTimer(IntPtr timerHandle)
-        {
-            if (timerHandle != IntPtr.Zero)
-            {
-                CancelWaitableTimer(timerHandle);
-                CloseHandle(timerHandle);
-            }
-        }
-    }
+	}
 }

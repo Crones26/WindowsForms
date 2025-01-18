@@ -37,31 +37,30 @@ namespace Clock
 		}
 		private void btnOK_Click(object sender, EventArgs e)
 		{
+			// Оригинальная логика
 			this.DialogResult = DialogResult.OK;
-			Week week = new Week
-				(
-					clbWeekDays.
-					Items.
-					Cast<object>().
-					Select((item, index) => clbWeekDays.GetItemChecked(index)).ToArray()
-				);
-			Console.WriteLine(week);
+
+			Week week = new Week(clbWeekDays.Items.Cast<object>()
+				.Select((item, index) => clbWeekDays.GetItemChecked(index)).ToArray());
+
 			Alarm.Date = dtpDate.Enabled ? dtpDate.Value : DateTime.MinValue;
 			Alarm.Time = dtpTime.Value.TimeOfDay;
 			Alarm.Weekdays = week;
 			Alarm.Filename = lblAlarmFile.Text;
 			Alarm.Message = rtbMessage.Text;
+
 			if (string.IsNullOrEmpty(Alarm.Filename) || Alarm.Filename == "File:")
 			{
 				this.DialogResult = DialogResult.None;
-				MessageBox.Show
-					(
-						this,
-						"Выберите звуковой файл",
-						"Warning",
-						MessageBoxButtons.OK,
-						MessageBoxIcon.Warning
-					);
+				MessageBox.Show(this, "Выберите звуковой файл", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				return;
+			}
+
+			// Установка таймера пробуждения
+			DateTime alarmTime = dtpDate.Enabled ? dtpDate.Value.Date + dtpTime.Value.TimeOfDay : DateTime.Now.Date + dtpTime.Value.TimeOfDay;
+			if (alarmTime > DateTime.Now)
+			{
+				PowerManagement.SetWakeTimer(alarmTime);
 			}
 		}
 
